@@ -1,0 +1,25 @@
+name: ocrmypdf-tool
+services:
+  app:
+    image: rkuzner/docker-ocrmypdf:latest
+    container_name: docker-ocrmypdf1
+    deploy:
+      resources:
+        limits:
+          memory: 32M
+    cpu_shares: 10
+    network_mode: bridge
+    volumes:
+      - /path/to/docker/config/ocrmypdf-tool:/config:ro
+      - /path/to/docker/config/ocrmypdf-tool/logs:/logs
+      - /path/to/source:/source
+      - /path/to/target:/target
+      - /path/to/processed:/processed
+    environment:
+      SOURCE_FOLDER: "/source/2ocr"
+      TARGET_FOLDER: "/target"
+      KEEP_SOURCEFILE: "false"
+      PROCESSED_FOLDER: "/source/2ocr/processed"
+      TOOL_SCHEDULE: "0 6 * * *"
+    restart: unless-stopped
+    tty: true
