@@ -5,6 +5,8 @@ defaultLogFolder=$( cd "$( dirname "${0}" )" && pwd )
 logFileBaseName="${logFileBaseName:-${defaultLogFileBaseName}}"
 logFolder="${logFolder}:-${defaultLogFolder}"
 
+COLUMNS=180
+
 function set_logFileBaseName() {
 	local fileBaseName="${1}"
 	if [ -z "${fileBaseName}" ]; then
