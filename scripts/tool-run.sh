@@ -65,9 +65,7 @@ log_message "Found valid folders!"
 log_message "Checking for source files"
 folderContents=$( ls -1 "${SOURCE_FOLDER}" )
 if [ -z "${folderContents}" ]; then
-	log_message "No files found on source folder."
-	log_message "Nothing to do!"
-	exit 0
+	log_message_and_exit 0 "No files found on source folder. Nothing to do!"
 fi
 
 log_message "Iterating source files: ${SOURCE_FOLDER}"
