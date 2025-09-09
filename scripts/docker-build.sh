@@ -2,7 +2,7 @@
 
 dockerUserName="rkuzner"
 imageName="docker-ocrmypdf"
-imageVersion="0.1.0"
+imageVersion="0.1.1"
 platformCodeList="amd64 arm64"
 
 # to run this commands, you should be logged to docker-hub!
