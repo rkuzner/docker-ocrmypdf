@@ -78,29 +78,37 @@ for individualFile in ${folderContents}; do
 
 	if [ -d "${SOURCE_FOLDER}/${individualFile}" ]; then
 		log_message "Found a directory! Ignoring: ${individualFile}"
+		continue
 	fi
-	if [ ! -d "${SOURCE_FOLDER}/${individualFile}" ]; then
-		log_message "Processing source file: ${individualFile}"
-		#log_message "DEBUG: will run ocrmypdf -l spa "${SOURCE_FOLDER}/${individualFile}" "${TARGET_FOLDER}/${individualFile}""
-		ocrmypdf -l spa "${SOURCE_FOLDER}/${individualFile}" "${TARGET_FOLDER}/${individualFile}" 2>&1 | tee -a "$( get_logFileName )"
-		ocrResult=${?}
-		if [ ${ocrResult} -eq 0 ]; then
-			# should match target's timestamps with source's timestamps
-			log_message "Updating target's timestamps..."
-			touch -r "${SOURCE_FOLDER}/${individualFile}" "${TARGET_FOLDER}/${individualFile}"
+	# individualFile is a File (notFolder)!
 
-			# if ocr successful, either keep or remove original (if aplicable)
-			if [ "${KEEP_SOURCEFILE}" == "true" ] ; then
-				log_message "Moving source file to processed folder..."
-				mv -n "${SOURCE_FOLDER}/${individualFile}" "${PROCESSED_FOLDER}"
-			fi
-			if [ "${KEEP_SOURCEFILE}" == "false" ] ; then
-				log_message "Removing source file..."
-				rm -f "${SOURCE_FOLDER}/${individualFile}"
-			fi
-		else
-			log_message "Could not ocr file! (ocrmypdf errCode: ${ocrResult})"
-		fi
+	log_message "Processing source file: ${individualFile}"
+	#log_message "DEBUG: will run ocrmypdf -l spa "${SOURCE_FOLDER}/${individualFile}" "${TARGET_FOLDER}/${individualFile}""
+	ocrmypdf -l spa "${SOURCE_FOLDER}/${individualFile}" "${TARGET_FOLDER}/${individualFile}" 2>&1 | tee -a "$( get_logFileName )"
+	ocrResult=${?}
+	if [ ${ocrResult} -ne 0 ]; then
+		log_message "Could not ocr file! (ocrmypdf errCode: ${ocrResult})"
+		continue
+	fi
+
+	# target file was created?
+	if [ ! -f "${TARGET_FOLDER}/${individualFile}" ]; then
+		log_message "OCRed target file missing! (maybe a subprocess error?)"
+		continue
+	fi # target file was created?
+
+	# should match target's timestamps with source's timestamps
+	log_message "Updating target's timestamps..."
+	touch -r "${SOURCE_FOLDER}/${individualFile}" "${TARGET_FOLDER}/${individualFile}"
+
+	# if ocr successful, either keep or remove original (if aplicable)
+	if [ "${KEEP_SOURCEFILE}" == "true" ] ; then
+		log_message "Moving source file to processed folder..."
+		mv -n "${SOURCE_FOLDER}/${individualFile}" "${PROCESSED_FOLDER}"
+	fi
+	if [ "${KEEP_SOURCEFILE}" == "false" ] ; then
+		log_message "Removing source file..."
+		rm -f "${SOURCE_FOLDER}/${individualFile}"
 	fi
 
 done
