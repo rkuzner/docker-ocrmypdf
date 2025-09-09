@@ -27,6 +27,13 @@ The format is based on [Keep a Changelog][web_changelog], and this project adher
 
 > Please list here the soon-to-be-released features
 
+## 0.1.1 - 2025-09-09
+
+![img_upd]
+
+- improve script readability, by avoiding nested conditions using fail fast pattern
+- add default value for keep_sourcefile
+
 ## 0.1.0 - 2025-09-04
 
 ![img_add]
