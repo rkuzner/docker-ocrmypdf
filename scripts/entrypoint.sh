@@ -18,7 +18,7 @@ DEFAULT_LOG_FOLDER="/logs"
 DEFAULT_SOURCE_FOLDER="/source"
 DEFAULT_TARGET_FOLDER="/target"
 DEFAULT_PROCESSED_FOLDER="/processed"
-
+DEFAULT_KEEP_SOURCEFILE="false"
 
 set_logFolder "${LOG_FOLDER:-${DEFAULT_LOG_FOLDER}}"
 set_logFileBaseName "${scriptBaseName}"
