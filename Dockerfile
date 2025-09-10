@@ -5,7 +5,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get autoremove -y
 
 # install sudo to support running tool as unpriviledged user
 # install cron daemon to support in-container cron schedule
-# install poppler utils onto the image (will be used by organize-tool)
+# install ocrmypdf and tesseract utils onto the image
 RUN apt-get install -y sudo cron ocrmypdf tesseract-ocr-spa
 
 # add a user so the tool is encapsulated
